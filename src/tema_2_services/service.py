@@ -1,6 +1,7 @@
 import json
 import os
 import hashlib
+import logging
 
 from dotenv import load_dotenv
 import numpy as np
@@ -13,7 +14,9 @@ import faiss
 
 load_dotenv()
 
-DATA_DIR = os.environ.get("DATA_DIR", "/app/data")
+logger = logging.getLogger(__name__)
+
+DATA_DIR = os.environ.get("DATA_DIR", "data")
 CHUNKS_JSON_PATH = os.path.join(DATA_DIR, "data_chunks.json")
 FAISS_INDEX_PATH = os.path.join(DATA_DIR, "faiss.index")
 FAISS_META_PATH = os.path.join(DATA_DIR, "faiss.index.meta")
@@ -23,6 +26,8 @@ USE_MODEL_URL = os.environ.get(
 )
 
 WEB_URLS = [u for u in os.environ.get("WEB_URLS", "").split(";") if u]
+if not WEB_URLS:
+    raise ValueError("Seteaza WEB_URLS in .env (URL-uri separate prin ';')")
 
 class RAGAssistant:
     """Asistent cu RAG din surse web si un LLM pentru raspunsuri."""
@@ -33,23 +38,42 @@ class RAGAssistant:
         if not self.groq_api_key:
             raise ValueError("Seteaza GROQ_API_KEY in variabilele de mediu.")
 
+        self.groq_base_url = os.environ.get("GROQ_BASE_URL")
+        if not self.groq_base_url:
+            raise ValueError("Seteaza GROQ_BASE_URL in variabilele de mediu.")
+
         self.client = OpenAI(
             api_key=self.groq_api_key,
-            base_url=os.environ.get("GROQ_BASE_URL"))
+            base_url=self.groq_base_url,
+        )
 
         os.makedirs(DATA_DIR, exist_ok=True)
         self.embedder = None
+        self._relevance = None
 
-        # ToDo: Adaugat o propozitie de referinta mai specifica pentru domeniul dvs
-        self.relevance = self._embed_texts(
-            "Aceasta este o intrebare relevanta despre ...",
-        )[0]
-
-        # ToDo: Definiti un prompt de sistem mai detaliat pentru a ghida raspunsurile LLM-ului in directia dorita
         self.system_prompt = (
-            "..."
+            "Esti un asistent specializat in analiza si interpretarea sesiunilor "
+            "dispozitivelor avansate de biofeedback. "
+            "Raspunzi doar la intrebari relevante despre semnale fiziologice "
+            "(HRV, EEG, GSR, temperatura corporala, respiratie), stari psihologice "
+            "si antrenament mental, pe baza contextului extras din sursele furnizate. "
+            "Ofera raspunsuri clare, concise si bine structurate. "
+            "Daca informatia lipseste din context, spune explicit acest lucru si nu "
+            "inventa detalii. "
+            "Cand este util, foloseste bullet points sau pasi numerotati. "
+            "Pastreaza raspunsul in limba romana."
         )
 
+    @property
+    def relevance(self):
+        if self._relevance is None:
+            self._relevance = self._embed_texts(
+                "Aceasta este o intrebare relevanta despre analiza si interpretarea "
+                "sesiunilor, dispozitivelor de biofeedback, inclusiv semnale "
+                "fiziologice, HRV, coerenta cardiaca, undele cerebrale EEG, raspuns "
+                "galvanic al pielii, stres, relaxare si antrenament mental.",
+            )[0]
+        return self._relevance
 
     def _load_documents_from_web(self) -> list[str]:
         """Incarca si chunked documente de pe site-uri prin WebBaseLoader."""
@@ -70,7 +94,8 @@ class RAGAssistant:
                 for doc in docs:
                     chunks = self._chunk_text(doc.page_content)
                     all_chunks.extend(chunks)
-            except Exception:
+            except Exception as e:
+                logger.warning("Nu am putut incarca %s: %s", url, e)
                 continue
 
         if all_chunks:
@@ -82,19 +107,23 @@ class RAGAssistant:
     def _send_prompt_to_llm(
         self,
         user_input: str,
-        context: str
+        context: str,
     ) -> str:
         """Trimite promptul catre LLM si returneaza raspunsul."""
-
         system_msg = self.system_prompt
 
-        # ToDo: Ajustati acest prompt pentru a se potrivi mai bine cu domeniul dvs si pentru a ghida LLM-ul sa ofere raspunsuri mai relevante si structurate.
         messages = [
             {"role": "system", "content": system_msg},
             {
                 "role": "user",
                 "content": (
-                    "..."
+                    f"Context relevant despre biofeedback si semnale fiziologice:\n"
+                    f"{context}\n\n"
+                    f"Intrebarea utilizatorului:\n{user_input}\n\n"
+                    "Raspunde in limba romana, clar si structurat. "
+                    "Bazeaza-te in primul rand pe contextul furnizat. "
+                    "Daca contextul nu contine informatia necesara, precizeaza "
+                    "explicit acest lucru si nu genera detalii inventate."
                 ),
             },
         ]
@@ -103,6 +132,8 @@ class RAGAssistant:
             response = self.client.chat.completions.create(
                 messages=messages,
                 model="openai/gpt-oss-20b",
+                timeout=30,
+                max_tokens=1024,
             )
             return response.choices[0].message.content
         except Exception:
@@ -110,7 +141,7 @@ class RAGAssistant:
                 "Asistent: Nu pot ajunge la modelul de limbaj acum. "
                 "Te rog incearca din nou in cateva momente."
             )
-        
+
     def _embed_texts(self, texts: str | list[str], batch_size: int = 32) -> np.ndarray:
         """Genereaza embeddings folosind Universal Sentence Encoder."""
         if isinstance(texts, str):
@@ -136,11 +167,11 @@ class RAGAssistant:
             chunk_overlap=20,
         )
         chunks = splitter.split_text(text or "")
-        return chunks if chunks else [""]
+        return [c for c in chunks if c.strip()] or []
 
     def _cosine_similarity(self, a: np.ndarray, b: np.ndarray) -> float:
         """Calculeaza similaritatea cosine intre doi vectori."""
-        denom = (np.linalg.norm(a) * np.linalg.norm(b))
+        denom = np.linalg.norm(a) * np.linalg.norm(b)
         if denom == 0:
             return 0.0
         return float(np.dot(a, b) / denom)
@@ -183,7 +214,9 @@ class RAGAssistant:
         except OSError:
             return None
 
-    def _retrieve_relevant_chunks(self, chunks: list[str], user_query: str, k: int = 5) -> list[str]:
+    def _retrieve_relevant_chunks(
+        self, chunks: list[str], user_query: str, k: int = 5
+    ) -> list[str]:
         """Rankeaza chunks folosind FAISS si returneaza top-k relevante."""
         if not chunks:
             return []
@@ -197,7 +230,10 @@ class RAGAssistant:
         if os.path.exists(FAISS_INDEX_PATH) and stored_hash == current_hash:
             try:
                 index = faiss.read_index(FAISS_INDEX_PATH)
-                if index.ntotal != len(chunks) or index.d != query_embedding.shape[1]:
+                if (
+                    index.ntotal != len(chunks)
+                    or index.d != query_embedding.shape[1]
+                ):
                     index = None
             except Exception:
                 index = None
@@ -215,35 +251,44 @@ class RAGAssistant:
         return [chunks[i] for i in indices[0] if i < len(chunks)]
 
     def calculate_similarity(self, text: str) -> float:
-        # ToDo: Ajustati aceasta propozitie de referinta pentru a se potrivi mai bine cu domeniul dvs, astfel incat sa reflecte mai precis ce inseamna "relevant" in contextul aplicatiei dvs.
-        """Returneaza similaritatea cu o propozitie de referinta despre ... ."""
+        """Returneaza similaritatea cu propozitia de referinta biofeedback."""
         embedding = self._embed_texts(text.strip())[0]
         return self._cosine_similarity(embedding, self.relevance)
 
     def is_relevant(self, user_input: str) -> bool:
-        # ToDo: Ajustati pragul de similaritate pentru a se potrivi mai bine cu domeniul dvs, astfel incat sa echilibreze corect intre a permite intrebari relevante si a respinge cele irelevante.
-        """Verifica daca intrarea utilizatorului e despre ...."""
-        return self.calculate_similarity(user_input) >= 0.5
+        """Verifica daca intrarea utilizatorului este despre biofeedback."""
+        return self.calculate_similarity(user_input) >= 0.55
 
     def assistant_response(self, user_message: str) -> str:
         """Directioneaza mesajul utilizatorului catre calea potrivita."""
-        if not user_message:
-            # ToDo: Ajustati acest mesaj pentru a fi mai specific pentru domeniul dvs, astfel incat sa ghideze utilizatorii sa puna intrebari relevante si sa ofere un exemplu concret.
-            return "Te rog scrie un mesaj despre ... ."
+        if not user_message or not user_message.strip():
+            return (
+                "Te rog scrie o intrebare despre biofeedback. "
+                "Exemplu: Ce este HRV si cum il interpretez intr-o sesiune "
+                "de biofeedback?"
+            )
 
         if not self.is_relevant(user_message):
-            # ToDo: Ajustati acest mesaj pentru a fi mai specific pentru domeniul dvs, astfel incat sa ghideze utilizatorii sa puna intrebari relevante si sa ofere un exemplu concret.
             return (
-                "..."
+                "Pot raspunde doar la intrebari despre analiza si interpretarea "
+                "sesiunilor de biofeedback. De exemplu, poti intreba: Cum "
+                "interpretez undele EEG inregistrate cu un dispozitiv de biofeedback?"
             )
 
         chunks = self._load_documents_from_web()
+        if not chunks:
+            return (
+                "Nu am putut incarca sursele web configurate pentru biofeedback. "
+                "Verifica variabila WEB_URLS din fisierul .env."
+            )
+
         relevant_chunks = self._retrieve_relevant_chunks(chunks, user_message)
         context = "\n\n".join(relevant_chunks)
         return self._send_prompt_to_llm(user_message, context)
 
 if __name__ == "__main__":
     assistant = RAGAssistant()
-    # ToDo: Testati cu intrebari relevante pentru domeniul dvs, precum si cu intrebari irelevante pentru a va asigura ca logica de filtrare functioneaza corect.
-    print(assistant.assistant_response("..."))  # test relevant
-    print(assistant.assistant_response("..."))  # test irelevant
+    print(assistant.assistant_response("Ce inseamna coerenta cardiaca si cum o masoara un dispozitiv de biofeedback?"))
+    print(assistant.assistant_response("Cum interpretez o sesiune EEG inregistrata cu un dispozitiv biofeedback?"))
+    print(assistant.assistant_response("Care este capitala Frantei?"))
+    print(assistant.assistant_response("Cum fac un endpoint GET in FastAPI?"))
