@@ -1,0 +1,190 @@
+================================================================
+TEMA 4 — GENERARE VIDEOCLIP VEO
+Proiect: QX WORLD — Lumea Fantastică a Biofeedback-ului Cuantic
+Autor: Bogdan MARIN
+Data: 06 Aprilie 2026
+Model folosit: Veo 3.1 Quality (Google Flow)
+Setări: 16:9 | x1 output | Audio: ON | Mod: Cadre (Frames to Video)
+================================================================
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 1 — INIȚIAL (conceptul brut, punct de plecare obligatoriu)
+────────────────────────────────────────────────────────────────
+
+A cinematic video about the fantastical world of quantum biofeedback,
+showing energy, frequencies and a human biofield in a futuristic
+healing space.
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 2 — EXTINS (iterație intermediară, prima expansiune)
+────────────────────────────────────────────────────────────────
+
+A breathtaking 8-second sci-fi wellness video inspired by QX WORLD
+and the hidden universe of quantum biofeedback. Start inside a single
+vibrating cell glowing with golden and cyan frequency patterns. The
+camera pulls back through tissues, nerves and energy channels until a
+full human silhouette appears, standing inside a luminous biofield
+shaped like a living halo. Waves of light travel through the body like
+intelligent frequencies, balancing dark stress fragments into flowing
+harmony. Around the figure, OMNIS-inspired circular interfaces, sacred
+geometric energy maps, waveform tunnels and shimmering meridian
+pathways float in space. The environment expands into a cosmic healing
+dimension filled with stars, nebula dust and interconnected light
+grids, showing that everything is energy. Cinematic lighting,
+ultra-detailed particles, premium futuristic wellness design, mystical
+yet elegant, emotionally uplifting, powerful sense of transformation.
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 3 — FINAL CLIP 1 / 8 secunde (0:00–0:08)
+────────────────────────────────────────────────────────────────
+
+A cinematic 8-second brand film opening for QX WORLD-inspired quantum
+biofeedback. Start inside a glowing microscopic cell pulsing with blue,
+teal, gold and magenta frequencies. The camera travels outward through
+luminous neural pathways, meridian-like energy lines and floating
+waveform particles until a calm human silhouette appears inside a dark
+futuristic wellness chamber inspired by OMNIS. Rich volumetric light,
+elegant holographic circles, premium cinematic realism, mystical-
+scientific mood, awe and wonder. Native audio: deep ambient hum, soft
+pulse, subtle crystalline shimmer, music. No readable text, no logos,
+no hospital, no medical devices, no surgery, no distorted anatomy,
+no cheap CGI.
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 4 — FINAL CLIP 2 / 8 secunde (0:08–0:16)
+────────────────────────────────────────────────────────────────
+
+Continue the exact same character and environment. The human figure now
+stands inside a radiant toroidal biofield. Circular OMNIS-inspired
+interfaces orbit around the body while soft chakra vortices and
+meridian pathways light up one by one. Small dark stress fragments
+appear in the field, then dissolve into harmonious golden-blue light as
+frequency waves ripple through the body. Slow dolly-in, subtle orbit
+camera move, ultra-detailed particles, premium futuristic wellness
+aesthetic, poetic and transformative. Native audio: low electromagnetic
+hum, calm breath, soft page-like flutter, healing chimes, no music. No
+readable text, no logos, no medical claim visuals, no distorted
+anatomy, no cheap CGI.
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 5 — FINAL CLIP 3 / 8 secunde (0:16–0:24)
+────────────────────────────────────────────────────────────────
+
+Continue seamlessly from the previous clip. The camera pulls back as
+the human biofield expands into a vast cosmic network of light,
+connecting body, mind, environment and consciousness. Glowing nodes and
+lines spread across a star-filled healing dimension while the figure
+becomes a radiant "body electric" silhouette at the center of a living
+frequency web. The final shot feels elevated, balanced and visionary,
+with rich depth, elegant motion, realistic light physics and a premium
+spiritual-scientific atmosphere. Native audio: warm harmonic swell,
+soft energetic pulse, delicate shimmering resonance, peaceful breath.
+No readable text, no logo, no horror, no distorted anatomy, no cheap
+CGI.
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 6 — EXTEND OPȚIONAL / +6 secunde (0:24–0:30)
+────────────────────────────────────────────────────────────────
+
+Extend the same scene for 6 more seconds. The cosmic frequency network
+gently stabilizes into a serene luminous equilibrium around the human
+figure. The camera slows into a graceful wide closing shot. The
+toroidal biofield breathes softly, all stress fragments fully
+dissolved, leaving only calm, coherence and radiant balance. Cinematic,
+premium, emotionally uplifting, subtle golden-blue glow, no text,
+no logo.
+
+
+────────────────────────────────────────────────────────────────
+PROMPT 7 — COMPLET CENTRALIZAT / VERSIUNEA MAXIMĂ
+(de folosit dacă interfața permite prompt lung unic — 24 secunde)
+────────────────────────────────────────────────────────────────
+
+A breathtaking 24-second cinematic sci-fi wellness film inspired by
+QX WORLD and the hidden universe of quantum biofeedback.
+
+The film opens inside a single vibrating cell glowing with golden and
+cyan frequency patterns. The camera pulls back through tissues, nerves
+and energy channels until a full human silhouette appears, standing
+inside a luminous biofield shaped like a living halo, inside a dark
+futuristic wellness chamber inspired by OMNIS software.
+
+The human figure stands calm and still as a radiant toroidal biofield
+forms around the body — made of blue, teal, gold and magenta light.
+Circular OMNIS-inspired holographic interfaces orbit the figure.
+Meridian-like energy lines, neural light pathways, subtle chakra
+vortices and waveform tunnels activate one by one. Waves of light
+travel through the body like intelligent frequencies. Small dark stress
+fragments appear inside the field, then dissolve into harmonious
+golden-blue light as frequency waves ripple through the body, restoring
+balance and coherence.
+
+In the final act, the camera pulls back as the biofield expands into a
+vast cosmic network of light connecting body, mind, environment and
+consciousness. Glowing nodes and lines spread across a star-filled
+healing dimension. The human figure transforms into a radiant "body
+electric" silhouette at the center of a living frequency web — showing
+that everything is energy.
+
+Shot composition: extreme close-up inside a cell → medium wide shot of
+the chamber → expansive cosmic wide shot. Camera: slow dolly-in on mid
+section, subtle handheld orbit around the figure, graceful pull-back on
+finale. Lighting: volumetric, mystical-scientific, rich depth, blue-
+teal-gold palette with magenta accents. Mood: awe-inspiring, poetic,
+transformative, emotionally uplifting, spiritual-scientific. Style:
+premium cinematic realism, ultra-detailed particles, futuristic wellness
+aesthetic, non-invasive, holistic, elegant. Native audio: deep ambient
+hum in opening, soft pulse and crystalline healing chimes in mid
+section, warm harmonic swell and peaceful breath in finale — music,
+no dialogue.
+
+IMPORTANT: No readable text, no subtitles, no watermarks, no brand
+logos, no hospital room, no medical equipment, no surgery, no blood,
+no horror, no distorted anatomy, no extra limbs, no cheap CGI, no
+oversaturated neon chaos.
+
+
+────────────────────────────────────────────────────────────────
+NEGATIVE PROMPT (de adăugat separat în câmpul dedicat, dacă există)
+────────────────────────────────────────────────────────────────
+
+readable text, subtitles, watermark, brand logo, hospital room,
+needles, surgery, blood, horror, glitch face, extra fingers, extra
+limbs, distorted anatomy, cheap CGI, cartoon style, low detail,
+oversaturated neon chaos, financial charts, crypto imagery, weapons,
+aggressive robot look, medical diagnosis visuals, clinical setting
+
+
+────────────────────────────────────────────────────────────────
+NOTE DE PRODUCȚIE
+────────────────────────────────────────────────────────────────
+
+Setări folosite în Google Flow:
+  - Model:        Veo 3.1 Quality
+  - Aspect ratio: 16:9 (Widescreen)
+  - Outputs:      x1 (pentru economie de credite)
+  - Audio:        ON (nativ, nu separat)
+  - Mod:          Frames to Video (Cadre) — suportat de Veo 3.1 Quality
+  - Ingredients:  NU (Ingredients to Video nu este suportat de Veo 3.1 Quality)
+
+Workflow:
+  1. Generare Clip 1 cu Prompt 3 (start frame opțional)
+  2. Salvare frame final din Clip 1 → folosit ca Input pentru Clip 2
+  3. Generare Clip 2 cu Prompt 4
+  4. Salvare frame final din Clip 2 → folosit ca Input pentru Clip 3
+  5. Generare Clip 3 cu Prompt 5
+  6. Asamblare în Scenebuilder → export final
+  7. Opțional: Extend cu Prompt 6 pentru 6 secunde în plus
+
+Durată totală: 24 secunde (3 x 8s) sau 30 secunde cu Extend
+
+================================================================
+Fișier generat pentru Tema 4 — Cursul de Prompt Engineering
+Upload: _non-code/tema_4_videoclipuri/
+================================================================
